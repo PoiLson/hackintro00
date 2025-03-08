@@ -35,10 +35,6 @@ jobs:
           username: ${{ secrets.username }}
           password: ${{ secrets.password }}
 
-          
-      - name: Docker Scout
-        uses: docker/scout-action@v1
-
 
       # Scan with Docker Scout
       - name: Docker Scout
