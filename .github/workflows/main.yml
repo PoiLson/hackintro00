@@ -26,7 +26,7 @@ jobs:
           docker_version: '28.0.1'
 
       - name: Build Docker Image
-        run: docker build -f Dockerfile -t whalE:latest . 
+        run: docker build -f Dockerfile -t whale:latest . 
 
       - name: Docker Scout
         uses: docker/scout-action@v1
