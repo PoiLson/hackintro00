@@ -3,13 +3,13 @@ name: CI
 on: [push]
 
 jobs:
-  docker_image_scan:
+  docker_image_scout:
     name: Build and Scan a Docker Image
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@V4
+        uses: actions/checkout@v4
 
       #We can first see if there is already
       #a pre-installed Docker version
