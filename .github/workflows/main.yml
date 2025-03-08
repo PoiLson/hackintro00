@@ -26,11 +26,44 @@ jobs:
           docker_version: '28.0.1'
 
       - name: Build Docker Image
-        run: docker build -f Dockerfile -t whale:latest . 
+        run: docker build -f Dockerfile -t whale . 
 
       - name: Docker Scout
         uses: docker/scout-action@v1
 
-      - name: Docker Scout scan
-        run: |
-          
+
+      # Scan with Docker Scout
+      - name: Docker Scout
+        uses: docker/scout-action@v1
+        with:
+          command: cves,recommendations,compare,sbom
+          image: whale  # ✅ Scan the built image
+          exit-code: false  # Don't fail the workflow if CVEs are found
+          sarif-file: sca_scout.sarif
+          output: sbom_scout.spdx.json
+          format: spdx
+
+      # Upload SBOM (Software Bill of Materials) as an artifact
+      - name: Upload SBOM file as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom_scout.spdx.json
+          path: sbom_scout.spdx.json
+
+      # Upload SARIF file (Security Analysis Report)
+      - name: Upload SARIF file as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca_scout.sarif
+          path: sca_scout.sarif
+
+      # Upload SARIF report to GitHub Security tab (for public repos or GitHub Enterprise)
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: sca_scout.sarif
+          category: Security/SCA
+
+      # Submit SBOM data to GitHub's dependency graph
+      - name: SBOM upload
+        uses: advanced-security/spdx-dependency-submission-action@v0.1.1
