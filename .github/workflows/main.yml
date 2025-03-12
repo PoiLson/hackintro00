@@ -6,7 +6,11 @@ jobs:
   docker_image_scout:
     name: Build and Scan a Docker Image
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      packages: write
+      security-events: write
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
