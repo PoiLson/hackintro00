@@ -36,17 +36,17 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/whale:latest -f Dockerfile .
+        run: docker build -f Dockerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/whale .
 
       - name: Push Docker Image to Docker Hub
-        run: docker push ${{ secrets.username }}/whale:latest
+        run: docker push ${{ secrets.username }}/whale
           
       # Scan with Docker Scout
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
           command: cves,recommendations,compare,sbom
-          image: ${{ secrets.username }}/whale:latest  # ✅ Now scanning a public image
+          image: ${{ secrets.username }}/whale  # ✅ Now scanning a public image
           #image: whale  # ✅ Scan the built image
           exit-code: false  # Don't fail the workflow if CVEs are found
           sarif-file: sca_scout.sarif
