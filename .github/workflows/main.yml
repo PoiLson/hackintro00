@@ -50,8 +50,8 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves,recommendations,compare,sbom
-          image: ${{ secrets.username }}/whale  # ✅ Now scanning a public image
-          #image: whale  # ✅ Scan the built image
+          image: ${{ secrets.username }}/whale  # Now scanning a public image
+          #image: whale  # Scan the built image
           exit-code: false  # Don't fail the workflow if CVEs are found
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
